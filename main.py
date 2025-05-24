@@ -57,19 +57,17 @@ def fetch_ticket_data(token):
 
 
 def calculate_tickets(sections):
-    availableTickets = 0
+    capacity = 0
+    unavailable = 0
     for section in sections:
-        if section['sectionName'] in ('144','143','142','141','138','137','136','135','228','229','230','231','233','234','235'):
-            availableTickets += section["capacity"] - section["unavailableSeats"]
-
-    print(availableTickets)
-    print(8967-availableTickets)
+        if section["standId"] in (43,44):
+            capacity += section["capacity"]
+            unavailable += section["unavailableSeats"]
 
 
-    total = 8967
-    soldTickets = total - availableTickets
+    available = capacity - unavailable
 
-    return total, availableTickets, soldTickets
+    return capacity, available, unavailable
 
 @app.get("/", response_class=HTMLResponse)
 def form(request: Request):
